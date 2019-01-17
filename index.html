@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Welcome to Vue</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <style>
+      html,
+      body {
+        color: #333;
+        font-size: 16px;
+        /* =====================================================
+        This pattern is downloaded from www.subtlepatterns.com 
+        If you need more, that's where to get'em.
+        ===================================================== */
+        background: url(concrete_seamless.png);
+      }
+
+      #card {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: calc(100vh - 20px * 2);
+        margin: 20px 0;
+        padding: 20px 40px;
+        background: #fff;
+        border-radius: 6px;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+      }
+
+      #counter {
+        margin: 0;
+        color: #27ae60;
+        font-size: 2rem;
+        font-weight: 700;
+        text-align: center;
+      }
+
+      #counter-suffix {
+        color: #27ae60;
+        font-size: 1rem;
+        font-weight: 700;
+      }
+
+      .separator {
+        width: 90%;
+        margin: 40px auto;
+        border-bottom: 1px solid rgba(0, 0, 0, .2);
+        box-shadow: (rgba(255, 255, 255, .3) 0 1px 0);
+      }
+
+      #textbox {
+        flex: 1;
+        box-sizing: border-box;
+        font-size: 1.1rem;
+        line-height: 1.6;
+        outline: 0;
+        border: none;
+        border-radius: 5px;
+      }
+
+      #textbox:focus {
+        outline: 0;
+      }
+
+      #clipboard {
+        margin-top: 20px;
+        text-align: right;
+      }
+
+      #clipboard .btn {
+        background: #27ae60;
+      }
+
+      #clipboard .fas {
+        margin-right: .5rem;
+      }
+    </style>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="clipboard.min.js"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <div class="container">
+        <div id="card">
+          <p id="counter">{{ countTextLength(text) }}</span>　<span id="counter-suffix">文字</span></p>
+          <div class="separator"></div>
+          <textarea name="" id="textbox" v-bind:placeholder="randomIntro()" ref="input" v-bind:value="text" v-focus></textarea>
+          <div id="clipboard">
+            <button href="" id="send-clipboard" class="waves-effect waves-light btn" data-clipboard-target="#textbox"><i class="fas fa-clipboard"></i>クリップボードにコピーする</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      var app = new Vue({
+        el: '#app',
+        data: function () {
+          return {
+            intro: [
+              '当たらなければどうということはない!',
+              'あのパイロットは飛び道具に頼って戦ってるわけじゃない',
+              'あんなの飾りです。偉い人にはそれが分からんのですよ',
+              '命は…オモチャじゃないんだぞおお!!',
+              '俺がガンダムだ!',
+              '親父にもぶたれたことないのに!',
+              '感情のままに行動することは人間として正しい生き方だ',
+              '感情を処理できん人類は、ゴミだと教えたはずだがな…',
+              '君とはなんだか気が合いそうだな…',
+              '斬るぞ!マシュマーさん!',
+              'グゥレイト!',
+              '誤射か。次は裏切りと見なすぞ',
+              'これ、差し上げます。ガンダムの記憶回路に取り付けてください',
+              '先に帰れ!俺はストライクを探す!',
+              'ザクとは違うのだよ、ザクとは!',
+              '殺人的な加速だ!!',
+              '白い奴はどこだ!?マッシュの仇は!',
+              'そこは頑張って格闘を当てるんだよ',
+              'ちょうど良い!紹介しておこう、私のパートナーを!',
+              'ちょっとまって',
+              'デュオ・マックスウェルだ',
+              'なんたって俺は不可能を可能にする男だからな!',
+              'なんでフリーダムとキュベレイばかりなんですかね?',
+              '逃げないで戦ってください',
+              'ニュータイプなんて言ってもさ、個人的にはたいてい不幸だったんだよな',
+              '人参いらないよ',
+              '狙い撃つ!',
+              '万死に値する!',
+              'ひとつだけ忠告がある。…死ぬほど痛いぞ',
+              '暴力は…いけないっ…',
+              'まだ戦える!',
+              'まだだ!まだ終わらんよ!',
+              'まだ強い人がいる…どういう人?',
+              'もっと色々な機体を使って欲しかったですね',
+              'やめてよね',
+              '有線式アームを搭載した機体か…ガトーとの戦いに備えて勉強しておこう',
+              'ユニヴァース!ユニヴァース!',
+              'ララァ・スンは私の母になってくれるかもしれなかった女性だ!',
+              '私…結婚、考えてませんから',
+              '私シャア・アズナブルが粛清しようと言うのだ!',
+              '私の愛馬は凶暴です',
+              '私はいつも一人だ…',
+            ],
+            text: ''
+          }
+        },
+        methods: {
+          randomIntro: function () {
+            const rnd = Math.floor(Math.random() * this.intro.length);
+            return this.intro[rnd]
+          },
+          countTextLength: function (text) {
+            return text.replace(/\n/g, '').length
+          },
+          update: function (e) {
+            this.text = e.target.value;
+          }
+        },
+        mounted() {
+          this.$nextTick(() => {
+            const $input = this.$refs.input;
+            $input.addEventListener('keyup', this.update);
+            $input.addEventListener('compositionend', this.update);
+          });
+        },
+        directives: {
+          focus: {
+            inserted: function (el) {
+              el.focus()
+            }
+          }
+        }
+      })
+      new ClipboardJS('#send-clipboard');
+    </script>
+  </body>
+
+</html>
